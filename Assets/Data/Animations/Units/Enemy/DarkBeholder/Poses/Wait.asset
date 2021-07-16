@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae0543fe805424df99fe08ce744cbe49, type: 3}
+  m_Name: Wait
+  m_EditorClassIdentifier: 
+  m_PoseEntries:
+  - path: SpriteMesh/Bones/MainBone
+    localPosition: {x: -0.1347084, y: -1.085274, z: 0}
+    localRotation: {x: 0, y: 0, z: 0.6697131, w: 0.74262}
+    localScale: {x: 1, y: 1, z: 1}
+  - path: SpriteMesh/Bones/MainBone/Head
+    localPosition: {x: 1.178687, y: 0.000000059604645, z: 0}
+    localRotation: {x: 0, y: 0, z: 0.0531007, w: 0.9985892}
+    localScale: {x: 1, y: 1, z: 1}
+  - path: SpriteMesh/Bones/MainBone/Tentacle(FT)
+    localPosition: {x: 1.625658, y: 2.16087, z: 0}
+    localRotation: {x: 0, y: 0, z: 0.27666962, w: 0.9609651}
+    localScale: {x: 1, y: 1, z: 1}
+  - path: SpriteMesh/Bones/MainBone/Tentacle(FT)/Blade(FT)
+    localPosition: {x: 1.2844539, y: -0.00000029802322, z: 0}
+    localRotation: {x: 0, y: 0, z: 0.8818037, w: 0.4716166}
+    localScale: {x: 1, y: 1, z: 1}
+  - path: SpriteMesh/Bones/MainBone/Tentacle(FT)/Blade(FT)/BoneForLimb(FT)
+    localPosition: {x: 1.6751192, y: -0.00000023841858, z: 0}
+    localRotation: {x: -0, y: -0, z: -0.8663117, w: -0.49950382}
+    localScale: {x: 1, y: 1, z: 1}
+  - path: SpriteMesh/Bones/MainBone/Tentacle(FL)
+    localPosition: {x: 0.22519296, y: 1.0718279, z: 0}
+    localRotation: {x: 0, y: 0, z: 0.81153107, w: 0.5843093}
+    localScale: {x: 1, y: 1, z: 1}
+  - path: SpriteMesh/Bones/MainBone/Tentacle(FL)/Blade(FL)
+    localPosition: {x: 1.3303313, y: 0.00000011920929, z: 0}
+    localRotation: {x: 0, y: 0, z: 0.6721736, w: 0.7403936}
+    localScale: {x: 1, y: 1, z: 1}
+  - path: SpriteMesh/Bones/MainBone/Tentacle(FL)/Blade(FL)/ForLimbBlade(FL)
+    localPosition: {x: 1.0000001, y: -0.000000029802322, z: 0}
+    localRotation: {x: -0, y: -0, z: -0.66228324, w: -0.7492536}
+    localScale: {x: 1, y: 1, z: 1}
+  - path: SpriteMesh/Bones/MainBone/FirstPartTentacle(BL)
+    localPosition: {x: 0.65336084, y: -1.3426807, z: 0}
+    localRotation: {x: 0, y: 0, z: -0.7894307, w: 0.61383975}
+    localScale: {x: 1, y: 1, z: 1}
+  - path: SpriteMesh/Bones/MainBone/FirstPartTentacle(BL)/SecondPartTentacle(BL)
+    localPosition: {x: 0.49468806, y: -0.00000029802322, z: 0}
+    localRotation: {x: 0, y: 0, z: 0.42519122, w: 0.90510356}
+    localScale: {x: 1, y: 1, z: 1}
+  - path: SpriteMesh/Bones/MainBone/FirstPartTentacle(BL)/SecondPartTentacle(BL)/Blade(BL)
+    localPosition: {x: 0.5346584, y: -0.00000023703251, z: 0}
+    localRotation: {x: 0, y: 0, z: -0.9029302, w: 0.42978722}
+    localScale: {x: 1, y: 1, z: 1}
+  - path: SpriteMesh/Bones/MainBone/FirstPartTentacle(BL)/SecondPartTentacle(BL)/Blade(BL)/ForLimbBlade(BL)
+    localPosition: {x: 0.8882204, y: 0.00000035762787, z: 0}
+    localRotation: {x: -0, y: -0, z: 0.76007247, w: 0.64983827}
+    localScale: {x: 1, y: 1, z: 1}
