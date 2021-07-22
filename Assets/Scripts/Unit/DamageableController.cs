@@ -26,12 +26,14 @@ public class DamageableController : MonoBehaviour
     private Vector2 _centreOffset = new Vector2(0f, 0f);
     [SerializeField]
     private GameObject _vfxOnDie;
+    [SerializeField]
+    private GameObject _dieScreen;
 
     private Vector2 _damageDirection;
     
     public HealthEvent OnHealthSet;
     public DamageEvent OnTakeDamage;
-    public DamageEvent OnDie;
+    public UnityEvent OnDie;
     public HealEvent OnGainHealth;
 
     public event Action<float> ChangeValueHealth = delegate { };
@@ -67,7 +69,7 @@ public class DamageableController : MonoBehaviour
 
         if (_currentHealth<=0)
         {
-            Die(damageController);
+            Die();
         }
     }
 
@@ -83,14 +85,21 @@ public class DamageableController : MonoBehaviour
         OnGainHealth.Invoke(amount, this);
     }
 
-    public void Die(DamageController damageController)
+    public void Die()
     {
         ChangeValueHealth(0f);
         GameObject tempVisualObj = Instantiate(_vfxOnDie);
         tempVisualObj.transform.position = new Vector3(gameObject.transform.position.x,gameObject.transform.position.y+0.6f,tempVisualObj.transform.position.z);
         tempVisualObj.transform.rotation = Quaternion.Euler(0f,0f,0f);
-        OnDie.Invoke(damageController, this);
-        Destroy(gameObject);
+        OnDie.Invoke();
+        if (gameObject.GetComponent<HeroController>())
+        {
+            gameObject.SetActive(false);
+            _dieScreen.SetActive(true);
+            _dieScreen.GetComponent<Animation>().Play("Emergence ");
+        }
+        else
+            Destroy(gameObject);
         Destroy(tempVisualObj, 0.5f);
     }
 }

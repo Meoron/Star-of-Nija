@@ -121,27 +121,27 @@ public abstract class Weapon : MonoBehaviour
     {
         if (Input.GetButton("Fire1") && !Input.GetButton("Fire2") && ammo > 0)
         {
-            Shoot(CalculationDelayTimeBetweenShots(fireRate), ref ammo, reduceNumberBulletsPerShot);
+            Shoot(CalculationDelayTimeBetweenShots(fireRate), reduceNumberBulletsPerShot);
         }
 
         if (Input.GetButton("Fire2") && !Input.GetButton("Fire1") && ammo > 0)
         {
-            AlternativeShoot(CalculationDelayTimeBetweenShots(_alternativeFireRate), ref ammo, alternativeReduceNumberBulletsPerShot);
+            AlternativeShoot(CalculationDelayTimeBetweenShots(_alternativeFireRate), alternativeReduceNumberBulletsPerShot);
         }
     }
 
-    protected virtual void Shoot(float timeToStartShoot, ref int ammo, int reduceNumberAmmoPerShot)
+    protected virtual void Shoot(float timeToStartShoot, int reduceNumberAmmoPerShot)
     {
-        if (_currentTimeToStartShoot > timeToStartShoot)
+        if (_currentTimeToStartShoot > timeToStartShoot && HeroSelectionWeaponController.AmmoWeapons[WeaponSlot] > 0)
         {
             Shot(bulletPrefab, numberOfBullets, _bulletScatter,fireRate, actionAfterShot,folderEventSoundShot);
             _heroSelectionWeaponController.ChangeСurrentValueAmmo(-reduceNumberAmmoPerShot, WeaponSlot);
         }
     }
 
-    protected virtual void AlternativeShoot(float timeToStartShoot, ref int ammo, int reduceNumberAmmoPerShot)
+    protected virtual void AlternativeShoot(float timeToStartShoot, int reduceNumberAmmoPerShot)
     {
-        if (_currentTimeToStartShoot > timeToStartShoot)
+        if (_currentTimeToStartShoot > timeToStartShoot && HeroSelectionWeaponController.AmmoWeapons[WeaponSlot] > 0)
         {
             Shot(alternativeBulletPrefab, alternativeNumberOfBullets, _alternativeBulletScatter, _alternativeFireRate, actionAfterAlternativeShot,alternatineFolderEventSoundShot);
             _heroSelectionWeaponController.ChangeСurrentValueAmmo(-reduceNumberAmmoPerShot, WeaponSlot);

@@ -23,18 +23,18 @@ public class DemonicShotgun : Weapon
 
     protected override void StartShooting(ref int ammo)
     {
-        if (Input.GetButton("Fire1") && !Input.GetButton("Fire2") && _canShot == true && ammo>0)
+        if (Input.GetButton("Fire1") && !Input.GetButton("Fire2") && _canShot == true)
         {
-            Shoot(CalculationDelayTimeBetweenShots(fireRate), ref ammo, reduceNumberBulletsPerShot);
-            if (ammo % 2 == 0)
+            Shoot(CalculationDelayTimeBetweenShots(fireRate), reduceNumberBulletsPerShot);
+            if (HeroSelectionWeaponController.AmmoWeapons[WeaponSlot] % 2 == 0)
             {
                 StartCoroutine(PlayingWeaponReloadAnimation());
             }
         }
 
-        if (Input.GetButton("Fire2") && !Input.GetButton("Fire1") && _canShot == true && ammo > 0)
+        if (Input.GetButton("Fire2") && !Input.GetButton("Fire1") && _canShot == true)
         {
-            AlternativeShoot(CalculationDelayTimeBetweenShots(alternativeFireRate), ref ammo, alternativeReduceNumberBulletsPerShot);
+            AlternativeShoot(CalculationDelayTimeBetweenShots(alternativeFireRate), alternativeReduceNumberBulletsPerShot);
             StartCoroutine(PlayingWeaponReloadAnimation());
         }
     }

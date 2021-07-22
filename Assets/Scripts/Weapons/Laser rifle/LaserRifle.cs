@@ -21,7 +21,7 @@ public class LaserRifle : Weapon
     {
         if (Input.GetButton("Fire1") && !Input.GetButton("Fire2") && ammo > 0)
         {
-            Shoot(CalculationDelayTimeBetweenShots(fireRate), ref ammo, reduceNumberBulletsPerShot);
+            Shoot(CalculationDelayTimeBetweenShots(fireRate), reduceNumberBulletsPerShot);
         }
 
         if (Input.GetButton("Fire2") && !Input.GetButton("Fire1") && ammo > 0)
@@ -30,7 +30,7 @@ public class LaserRifle : Weapon
             if (stopwatch >= timeBeforeAlternativeAttack)
             {
                 laserVFX.SetActive(true);
-                AlternativeShoot(CalculationDelayTimeBetweenShots(alternativeFireRate), ref ammo, alternativeReduceNumberBulletsPerShot);
+                AlternativeShoot(CalculationDelayTimeBetweenShots(alternativeFireRate), alternativeReduceNumberBulletsPerShot);
             }
         }
 
@@ -41,11 +41,11 @@ public class LaserRifle : Weapon
         }
     }
 
-    protected override void AlternativeShoot(float alternativeFireRate, ref int ammo, int alternativeReduceNumberBulletsPerShot)
+    protected override void AlternativeShoot(float alternativeFireRate, int reduceNumberAmmoPerShot)
     {
         Shot(alternativeBulletPrefab, alternativeNumberOfBullets, alternativeBulletScatter, alternativeFireRate, actionAfterAlternativeShot, alternatineFolderEventSoundShot);
-        ammo -= alternativeReduceNumberBulletsPerShot;
-        if (ammo <=0)
+        HeroSelectionWeaponController.ChangeСurrentValueAmmo(-reduceNumberAmmoPerShot, WeaponSlot);
+        if (HeroSelectionWeaponController.AmmoWeapons[WeaponSlot] <= 0)
             laserVFX.SetActive(false);
     }
 }

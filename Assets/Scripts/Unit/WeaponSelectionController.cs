@@ -32,11 +32,14 @@ public class WeaponSelectionController : MonoBehaviour
     public delegate void AmmoWeaponHandler(int valueAmmo);
     public AmmoWeaponHandler AmmoInformation;
 
+    private GameObject _currentWeapon;
     private int _currentSlot=0;
     private Animator _heroAnimator;
     private HeroController _heroController;
 
 
+    public GameObject CurrentWeapon
+    { get { return _currentWeapon; } }
 
     public GameObject[] SlotsWeapons
     { set { _slotsWeapons = value; }
@@ -92,6 +95,7 @@ public class WeaponSelectionController : MonoBehaviour
             children.ForEach(Destroy);
         }
         nextWeapon = Instantiate(nextWeapon, weaponEquipmentBone);
+        _currentWeapon = nextWeapon;
         ResetAngleObjectFromWorld(nextWeapon);
         SetCurrectPositionWeaponInArm(nextWeapon);
         InformationAboutCurrentWeapon(CurrentSlot, AmmoWeapons[CurrentSlot]);

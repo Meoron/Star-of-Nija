@@ -26,7 +26,7 @@ public class HellSolder : EnemyController, IHaveAIUnit, IMovable, IAttackedMelee
 
     public void SetAIUnit()
     {
-        if (distanceToPlayer < _meleeAttackDistance)
+        if (distanceToPlayer < _meleeAttackDistance && player.GetComponent<DamageableController>().CurrentHealth >0)
             stateAI = "meleeAttack";
         LookingForPlayer();
         switch (stateAI)

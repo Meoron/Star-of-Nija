@@ -38,9 +38,9 @@ public class CyberDevil : EnemyController, IHaveAIUnit, IMovable, IAttackedMelee
     {
         LookingForPlayer();
 
-        if (distanceToPlayer < _meleeAttackDistance)
+        if (distanceToPlayer < _meleeAttackDistance && player.GetComponent<DamageableController>().CurrentHealth > 0)
             stateAI = "meleeAttack";
-        if (_canRangeHit && distanceToPlayer < _rangeAttackDistance && distanceToPlayer > _meleeAttackDistance)
+        if (_canRangeHit && distanceToPlayer < _rangeAttackDistance && distanceToPlayer > _meleeAttackDistance && player.GetComponent<DamageableController>().CurrentHealth > 0)
             stateAI = "rangeAttack";
         
         switch (stateAI)
