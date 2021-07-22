@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(HeroController))]
 public class UserController : MonoBehaviour
 {
     private HeroController heroController;
@@ -17,7 +16,7 @@ public class UserController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        heroController.SetStateAnimation(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        heroController.SetStateMovingAnimation(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
     }
 
     // Update is called once per frame
@@ -27,7 +26,7 @@ public class UserController : MonoBehaviour
             heroController.Jump();
 
         if (Input.GetButton("Horizontal") && Input.GetButton("Vertical") == false)
-            heroController.Moving(Input.GetAxis("Horizontal"), heroController.Speed);
+            heroController.MovingInUserDirection(Input.GetAxis("Horizontal"));
 
         if (Input.GetAxis("Vertical")<0)
             heroController.Crouch(Input.GetAxis("Horizontal"));

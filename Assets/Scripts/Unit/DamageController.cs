@@ -37,7 +37,7 @@ public class DamageController : MonoBehaviour
     private Collider2D[] _attackOverlapResults = new Collider2D[10];
 
     private bool _isBullet = false;
-    private bool canDamage = true;
+    private bool _canDamage = true;
     private Vector2 _scale;
     private Vector2 _facingOffset;
     private Vector2 _scaledSize;
@@ -64,7 +64,7 @@ public class DamageController : MonoBehaviour
     { get { return _attackContactFilter; } }
 
     public bool CanDamage
-    { get { return canDamage; } }
+    { get { return _canDamage; } }
 
 
 
@@ -79,7 +79,7 @@ public class DamageController : MonoBehaviour
     void FixedUpdate()
     {
         CalculatingSizeDamageField();
-        if (!canDamage)
+        if (!_canDamage)
             return;
         Vector2 pointA = (Vector2)transform.position + _facingOffset + _scaledSize / 2;
         Vector2 pointB = (Vector2)transform.position + _facingOffset - _scaledSize / 2;
@@ -98,7 +98,7 @@ public class DamageController : MonoBehaviour
                 damageable.TakeDamage(this);
                 EventAfterTakeDamage?.Invoke();
                 if (_disableDamageAfterHit)
-                    DisableDamage();
+                    EnableDamage(false);
                 if (_isBullet)
                 {
                     gameObject.GetComponent<DamageController>().enabled = false;
@@ -122,13 +122,8 @@ public class DamageController : MonoBehaviour
        _scaledSize = Vector2.Scale(_size, _scale);
     }
 
-    public void EnableDamage()
+    public void EnableDamage(bool state)
     {
-        canDamage = true;
-    }
-
-    public void DisableDamage()
-    {
-        canDamage = false;
+        _canDamage = state;
     }
 }

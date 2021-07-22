@@ -18,7 +18,7 @@ public class HeathDrug : MonoBehaviour
     {
         if (other.gameObject.GetComponent<HeroController>())
         {
-            DamageableController damageable = other.gameObject.GetComponent<HeroController>().DamageableController;
+            DamageableController damageable = other.gameObject.GetComponent<DamageableController>();
             if (damageable.CurrentHealth < damageable.MaxHealth)
             {
                 damageable.GainHealth(Mathf.Min(healthAmount, damageable.MaxHealth - damageable.CurrentHealth));

@@ -151,7 +151,7 @@ public abstract class Weapon : MonoBehaviour
     protected void Shot(GameObject bullet, int numberOfBullets, float bulletScatterOnShot,float fireRate, UnityEvent actionAfterShot, string folderEventSound)
     {
         _currentTimeToStartShoot = 0;
-        bullet.GetComponent<Bullet>().InstantiateBullets(bullet, numberOfBullets, bulletScatterOnShot, _muzzleOfGun.transform, _heroController.UnitTransform);
+        bullet.GetComponent<Bullet>().InstantiateBullets(bullet, numberOfBullets, bulletScatterOnShot, _muzzleOfGun.transform, _heroController.GetComponent<Transform>());
  
         CameraShake.Shake(_cameraShakeDuration, _cameraShakePower, CameraShake.ShakeMode.OnlyX);
         actionAfterShot.Invoke();

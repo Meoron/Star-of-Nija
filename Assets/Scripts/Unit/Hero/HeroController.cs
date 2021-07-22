@@ -10,58 +10,98 @@ using System;
 [RequireComponent(typeof(SurfaceCheck))]
 [RequireComponent(typeof(DamageableController))]
 [RequireComponent(typeof(WeaponSelectionController))]
-public class HeroController : Unit
+public class HeroController : Unit,  IMovable, ILeaping
 {
-    private float horizontalAccelerationOfStrafe = 0.05f;
-    private Vector3 mousePositionOnCamera;
+    [SerializeField]
+    protected float _speed = 1.0F;
+    [SerializeField]
+    private float _jumpForce = 5.0F;
+    [SerializeField]
+    private int _ExtraJump = 1;
+
+    private Animator _unitAnimator;
+    private Rigidbody2D _rigidbody;
+    private SurfaceCheck _surfaceCheck;
+    private float _horizontalAccelerationOfStrafe = 0.05f;
 
     private AimOnGUI aimPosition;
-    private GameObject Aim;
+    private GameObject _aim;
    
-    public Vector3 MousePositionOnCamera { set { mousePositionOnCamera = value; } }
+    //public Vector3 MousePositionOnCamera { set { _mousePositionOnCamera = value; } }
 
+    public float Speed
+    { get { return _speed; } }
+
+    public Animator UnitAnimator
+    { get { return _unitAnimator; } }
 
 
     private void Start()
-    { 
-        Aim = GameObject.Find("Aim");
-        aimPosition = Aim.GetComponent<AimOnGUI>();
+    {
+        _aim = GameObject.Find("Aim");
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _unitAnimator = GetComponent<Animator>();
+        _surfaceCheck = GetComponent<SurfaceCheck>();
+        aimPosition = _aim.GetComponent<AimOnGUI>();
     }
 
     private void FixedUpdate()
     {
-        Strafe(Input.GetAxis("Horizontal"),Speed, horizontalAccelerationOfStrafe);
+        Strafe(Input.GetAxis("Horizontal"),_speed, _horizontalAccelerationOfStrafe);
+        RollUnit(GetDirectionMouseOnCameraAboutPlayer());
     }
-   
 
+    public void MovingInUserDirection(float xAxisDirection)
+    {
+        Vector3 direction = transform.right * xAxisDirection;
+        Moving(direction);
+    }
+
+    public void Jump()
+    {
+        if (_surfaceCheck.OnGround == true)
+            _ExtraJump = 1;
+
+        if (_ExtraJump > 0)
+        {
+            _rigidbody.AddForce(transform.up * _jumpForce, ForceMode2D.Impulse);
+            _ExtraJump--;
+        }
+    }
 
     public void Crouch(float horizontalAxis)
     {
-        rigidbody.velocity = transform.right * horizontalAxis * Speed/2;
+        _rigidbody.velocity = transform.right * horizontalAxis * _speed/2;
     }
 
     public void Strafe(float horizontalAxis, float speed, float horizontalAccelerationOfStrafe)
     {
-        rigidbody.AddForce(transform.right * horizontalAxis * horizontalAccelerationOfStrafe, ForceMode2D.Impulse);
+        _rigidbody.AddForce(transform.right * horizontalAxis * horizontalAccelerationOfStrafe, ForceMode2D.Impulse);
     }
 
-   
-
-    public void SetStateAnimation(float horizontalAxis, float verticalAxis)
+    public void SetStateMovingAnimation(float horizontalAxis, float verticalAxis)
     {
-        if (SurfaceChech.OnGround==false)
+        if (_surfaceCheck.OnGround==false)
             verticalAxis = 1f;
-        horizontalAxis = horizontalAxis * (mousePositionOnCamera.x / Math.Abs(mousePositionOnCamera.x));
-        UnitAnimator.SetFloat("horizontalStateMoving", horizontalAxis);
-        if(verticalAxis<=0)
-            UnitAnimator.SetFloat("verticalStateMoving", verticalAxis);
+        horizontalAxis = horizontalAxis * GetDirectionMouseOnCameraAboutPlayer();
+        _unitAnimator.SetFloat("horizontalStateMoving", horizontalAxis);
+        _unitAnimator.SetFloat("verticalStateMoving", verticalAxis);
     }
 
     public IEnumerator StartPlayingReloadHeroAnimation()
     {
         float timeHeroReloadAnimation = 1.5f;
-        UnitAnimator.SetBool("ActiavationRealoadWeaponAnimation", true); //Value true activate hero weapon animation
-        yield return new WaitForSeconds(timeHeroReloadAnimation);  
-        UnitAnimator.SetBool("ActiavationRealoadWeaponAnimation", false);
+        _unitAnimator.SetBool("ActiavationRealoadWeaponAnimation", true); //Value true activate hero weapon animation
+        yield return new WaitForSeconds(timeHeroReloadAnimation);
+        _unitAnimator.SetBool("ActiavationRealoadWeaponAnimation", false);
+    }
+
+    private float GetDirectionMouseOnCameraAboutPlayer()
+    {
+        return transform.position.x < aimPosition.MouseWorldPosition.x ? 1 : -1;
+    }
+    public void Moving(Vector3 direction)
+    {
+        transform.position = Vector3.Lerp(transform.position, transform.position + direction, Time.deltaTime * _speed);
     }
 }

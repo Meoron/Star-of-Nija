@@ -8,8 +8,6 @@ public class MovingForMouse : MonoBehaviour
     [SerializeField]
     private float _offset = 0f;
     [SerializeField]
-    private bool _isBodyBone = false;
-    [SerializeField]
     private bool _isHandOrWeapon = false;
 
     private Transform _pointOfObjForRoll = null; //Use to rotate the object beyond another point and not beyond the center. 
@@ -20,7 +18,7 @@ public class MovingForMouse : MonoBehaviour
     private GameObject _aimPrefab;
     private Transform _unitTransform;
     private HeroController _heroController;
-    private Vector3 pastEleuerAngleObject;
+    private Vector3 _pastEleuerAngleObject;
 
     public Vector3 MousePositionOnCamera;
     
@@ -34,24 +32,15 @@ public class MovingForMouse : MonoBehaviour
 
     private void Start()
     {
-        pastEleuerAngleObject = transform.eulerAngles;
+        _pastEleuerAngleObject = transform.eulerAngles;
         _heroController = (HeroController)FindObjectOfType(typeof(HeroController));
         _unitTransform = _heroController.gameObject.transform;
-            _pointOfObjForRoll = transform;
-        /*if (_isBodyBone == true)
-            _divider = 2f;
-        else
-            _divider = 1f;*/
+        _pointOfObjForRoll = transform;
     }
 
     private void FixedUpdate()
     { 
         MousePositionOnCamera = _aimOnGUI.MouseWorldPosition - _pointOfObjForRoll.position;
-        if (_isBodyBone == true)
-        {
-            _heroController.RollUnit(MousePositionOnCamera.x);
-            _heroController.MousePositionOnCamera = MousePositionOnCamera;
-        }
         MovingBone(MousePositionOnCamera, transform);
     }
 
@@ -67,7 +56,7 @@ public class MovingForMouse : MonoBehaviour
                 _increaseInOffset = 0f;
         }
         var angle = Vector2.Angle(Vector2.right, mousePositionOnCamera);//Angle between the vector from the object to the mouse and the x-axis
-        objectForRoll.eulerAngles = new Vector3(0f, 0f, mousePositionOnCamera.y>0f ? (angle + _offset+ _increaseInOffset) : (-angle + _offset+ _increaseInOffset)) + pastEleuerAngleObject;
+        objectForRoll.eulerAngles = new Vector3(0f, 0f, mousePositionOnCamera.y>0f ? (angle + _offset+ _increaseInOffset) : (-angle + _offset+ _increaseInOffset)) + _pastEleuerAngleObject;
     }
 }
 
