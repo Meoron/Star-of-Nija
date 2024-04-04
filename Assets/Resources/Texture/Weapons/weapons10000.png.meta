@@ -144,7 +144,7 @@ TextureImporter:
       213: -3409229123325049851
     second: weapons10000_46
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -161,9 +161,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -172,9 +175,9 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -195,9 +198,15 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -209,6 +218,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -221,6 +231,33 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -1223,9 +1260,56 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      weapons10000_0: 5729285431401928734
+      weapons10000_1: -3254927154918278884
+      weapons10000_10: 460976641223442893
+      weapons10000_11: -160978791566501231
+      weapons10000_12: -7533065666004759951
+      weapons10000_13: -2989981765404868535
+      weapons10000_14: 7157483867048705038
+      weapons10000_15: -576500804229304983
+      weapons10000_16: 4431594862550061064
+      weapons10000_17: -1681622435298173579
+      weapons10000_18: -809769494934104430
+      weapons10000_19: -1216160076073443831
+      weapons10000_2: 6436973333898740719
+      weapons10000_20: -2001569762116311952
+      weapons10000_21: 1420445231599663514
+      weapons10000_22: -3275711156867988957
+      weapons10000_23: -6325587183147155961
+      weapons10000_24: -1240851632168971695
+      weapons10000_25: 2372011359987094688
+      weapons10000_26: -7577035200270088172
+      weapons10000_27: -3289855602224523661
+      weapons10000_28: -5305313039330938205
+      weapons10000_29: -2110161452242805976
+      weapons10000_3: -2308843884113693276
+      weapons10000_30: 6772883133389384511
+      weapons10000_31: 5290436792180770684
+      weapons10000_32: 4544296268016533825
+      weapons10000_33: 1039455396033128466
+      weapons10000_34: 4926791461296465127
+      weapons10000_35: -1762840089868762285
+      weapons10000_36: 4169640059760089030
+      weapons10000_37: 8994016869421356060
+      weapons10000_38: 2264477838166901908
+      weapons10000_39: 4529322991585587068
+      weapons10000_4: -5956924951910055232
+      weapons10000_40: -8029205998214744968
+      weapons10000_41: -3599016673620773036
+      weapons10000_42: -5088962444145220065
+      weapons10000_43: 5635917142541096318
+      weapons10000_44: 2106585152997050977
+      weapons10000_45: 1973363699738230765
+      weapons10000_46: -3409229123325049851
+      weapons10000_5: 2767154663093433266
+      weapons10000_6: 2164689514703288188
+      weapons10000_7: 2756551195669875593
+      weapons10000_8: 1660362645342296529
+      weapons10000_9: -5306702685529166612
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
