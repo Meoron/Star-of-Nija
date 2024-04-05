@@ -1,5 +1,6 @@
 using Sources.Common;
 using Sources.Common.StateMachine;
+using Sources.Project.StateMachine;
 using UnityEngine;
 
 namespace Sources.Project{

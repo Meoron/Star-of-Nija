@@ -16,9 +16,9 @@ namespace Sources.Common.AssetManager {
         }
         
         public static async Task<T> LoadPrefabAsync<T>(string path) where T : Object {
-            var asset = await LoadAsync<T>(path);
+            var asset = await LoadAsync<GameObject>(path);
             if (asset != null) {
-                return asset;
+                return asset.GetComponent<T>();
             }
             return null;
         }
@@ -39,8 +39,9 @@ namespace Sources.Common.AssetManager {
         public static async Task<T> LoadAsync<T>(string path) where T : Object {
             if (string.IsNullOrEmpty(path)) return null;
             
-            path = path.ToLowerInvariant();
-            path = path.Replace("/", "\\");
+            //path = path.ToLowerInvariant();
+            //path = path.Replace("/", "\\");
+            Debug.Log(typeof(T).FullName);
             return await Addressables.LoadAssetAsync<T>(path).Task;
         }
     }

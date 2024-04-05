@@ -1,4 +1,4 @@
-﻿namespace Sources.Platform.Data {
+﻿namespace Sources.Platforms.Data {
     public enum UserStatusType {
         
     }

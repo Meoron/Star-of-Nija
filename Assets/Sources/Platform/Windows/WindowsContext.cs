@@ -1,4 +1,4 @@
-﻿namespace Sources.Platform.Windows {
+﻿namespace Sources.Platforms.Windows {
     public sealed class WindowsContext : IPlatformContext {
         public IUserService UserService { get; }
         public ISaveService SaveService { get; }

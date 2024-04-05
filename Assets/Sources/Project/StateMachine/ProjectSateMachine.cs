@@ -1,12 +1,12 @@
-using Sources.Common.StateMachine;
-using Sources.Project;
-
-public sealed class ProjectSateMachine : StateMachine{
-	public IProjectController Controller { get;}
-	public IProjectContext ProjectContext { get; }
+namespace Sources.Project.StateMachine{
+	public sealed class ProjectSateMachine : Common.StateMachine.StateMachine{
+		public IProjectController Controller { get;}
+		public IProjectContext ProjectContext { get; }
 	
-	public ProjectSateMachine(IProjectController controller) : base(controller){
-		Controller = controller;
-		ProjectContext = Controller.ProjectContext;
+		public ProjectSateMachine(IProjectController controller) : base(controller){
+			Controller = controller;
+			ProjectContext = Controller.ProjectContext;
+		}
 	}
 }
+

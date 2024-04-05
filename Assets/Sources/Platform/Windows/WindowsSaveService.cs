@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Sources.Platform.Windows {
+namespace Sources.Platforms.Windows {
     public sealed class WindowsSaveService : ISaveService {
         public void Write(int userId, int slotId, string key, byte[] data) {
             var dir = Path.Combine(Application.persistentDataPath, userId.ToString(), slotId.ToString());

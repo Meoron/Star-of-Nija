@@ -1,42 +1,38 @@
 ﻿using UnityEngine;
 
-public class UserController : MonoBehaviour
-{
-    private IControlable controlableObject;
-    //private WeaponSelectionController weaponSelectionControler;
+public class UserController : MonoBehaviour{
+	private IControlable controlableObject;
 
-    private void Awake(){
-        var lastControlledObject = Resources.Load<GameObject>("Prefabs/Units/Character/DoomSlayer");
-        IControlable controlledObject = Instantiate(lastControlledObject).GetComponent<IControlable>();
-        Initialize(controlledObject);
-    }
+	private void Awake(){
+		var lastControlledObject = Resources.Load<GameObject>("Prefabs/Units/Character/DoomSlayer");
+		IControlable controlledObject = Instantiate(lastControlledObject).GetComponent<IControlable>();
+		Initialize(controlledObject);
+	}
 
-    // Start is called before the first frame update
-    private void Initialize(IControlable controlledObject){
-        controlableObject = controlledObject;
-        
-        //weaponSelectionControler = GetComponent<WeaponSelectionController>();
-    }
+	// Start is called before the first frame update
+	private void Initialize(IControlable controlledObject){
+		controlableObject = controlledObject;
 
-    private void FixedUpdate()
-    {
-        //heroController.SetStateMovingAnimation(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-    }
+		//weaponSelectionControler = GetComponent<WeaponSelectionController>();
+	}
 
-    // Update is called once per frame
-    private void Update()
-    {
-        //controlableObject.Control();
-        /*if (Input.GetButtonDown("Jump"))
-            heroController.Jump();
+	private void FixedUpdate(){
+		//heroController.SetStateMovingAnimation(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+	}
 
-        if (Input.GetButton("Horizontal") && Input.GetButton("Vertical") == false)
-            heroController.MovingInUserDirection(Input.GetAxis("Horizontal"));
+	// Update is called once per frame
+	private void Update(){
+		//controlableObject.Control();
+		/*if (Input.GetButtonDown("Jump"))
+			heroController.Jump();
 
-        if (Input.GetAxis("Vertical")<0)
-            heroController.Crouch(Input.GetAxis("Horizontal"));
+		if (Input.GetButton("Horizontal") && Input.GetButton("Vertical") == false)
+			heroController.MovingInUserDirection(Input.GetAxis("Horizontal"));
 
-        if (Input.GetAxis("Mouse ScrollWheel") != 0f)
-            weaponSelectionControler.SelectWeapon(Input.GetAxis("Mouse ScrollWheel"));*/
-    }
+		if (Input.GetAxis("Vertical")<0)
+			heroController.Crouch(Input.GetAxis("Horizontal"));
+
+		if (Input.GetAxis("Mouse ScrollWheel") != 0f)
+			weaponSelectionControler.SelectWeapon(Input.GetAxis("Mouse ScrollWheel"));*/
+	}
 }

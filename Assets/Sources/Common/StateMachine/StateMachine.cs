@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
 namespace Sources.Common.StateMachine {
     public interface IStateMachine : IUpdateable {

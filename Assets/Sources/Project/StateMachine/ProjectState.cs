@@ -1,17 +1,12 @@
 using Sources.Common.StateMachine;
 using Sources.Project;
+using Sources.Project.StateMachine;
 
-public class ProjectState : State{
-	protected ProjectSateMachine _stateMachine;
+public abstract class ProjectState : State{
+	protected new ProjectSateMachine _stateMachine;
 	protected IProjectContext ProjectContext { get { return _stateMachine.ProjectContext; } }
 	
-	public override void Initialize(StateMachine stateMachine){
+	public override void Initialize(StateMachine stateMachine) {
 		_stateMachine = stateMachine as ProjectSateMachine;
-	}
-
-	public override void Release(){
-	}
-
-	public override void OnUpdate(float deltaTime){
 	}
 }

@@ -1,13 +1,14 @@
 ﻿using System;
-using Sources.Platform.Data;
+using Sources.Platforms.Data;
 
-namespace Sources.Platform.Windows {
+namespace Sources.Platforms.Windows {
     public sealed class WindowsUserService : IUserService {
+        public UserData[] Users { get; private set; }
         public event Action<UserData> UserSignedOut;
         public event Action<UserData> UserSignedIn;
         public event Action<UserData> UserChanged;
-
-        public UserData[] Users { get; private set; }
+        public event Action<int, LoginState> UserStatusChanged;
+        
 
         public bool IsInitialize { get; }
 
@@ -30,8 +31,20 @@ namespace Sources.Platform.Windows {
         public void Logout(int slot) {
         }
 
+        public void Release(){
+            throw new NotImplementedException();
+        }
+
+        public void Update(float deltaTime){
+            throw new NotImplementedException();
+        }
+
         public UserData GetUser(int slot) {
             return Users[slot];
+        }
+
+        public UserData GetPrimaryUser(){
+            throw new NotImplementedException();
         }
     }
 }

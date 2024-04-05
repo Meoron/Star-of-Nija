@@ -1,4 +1,4 @@
-﻿namespace Sources.Platform {
+﻿namespace Sources.Platforms {
     public sealed class PlatformContext : IPlatformContext {
         public IUserService UserService { get; }
         public ISaveService SaveService { get; }

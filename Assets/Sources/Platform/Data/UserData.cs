@@ -1,4 +1,4 @@
-﻿namespace Sources.Platform.Data {
+﻿namespace Sources.Platforms.Data {
     public partial class UserData {
         public int SlotId;
         public int UserId;

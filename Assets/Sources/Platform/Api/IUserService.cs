@@ -1,11 +1,9 @@
 ﻿using System;
-using Sources.Platform.Data;
+using Sources.Platforms.Data;
 
-namespace Sources.Platform {
+namespace Sources.Platforms {
     public interface IUserService {
-        event Action<UserData> UserSignedOut;
-        event Action<UserData> UserSignedIn;
-        event Action<UserData> UserChanged;
+        event Action<int, LoginState> UserStatusChanged;
         
         UserData[] Users { get; }
         
@@ -14,6 +12,10 @@ namespace Sources.Platform {
         void Login(int slot);
         void Logout(int slot);
 
+        void Release();
+        void Update(float deltaTime);
+        
         UserData GetUser(int slot);
+        UserData GetPrimaryUser();
     }
 }
