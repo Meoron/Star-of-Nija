@@ -1,34 +1,41 @@
 using System;
 using Sources.Common;
 using Sources.Common.Serialization;
+using Sources.Common.StateMachine;
+using Sources.Platforms;
 using Sources.Platforms.Data;
 using Sources.Project.Data;
 using Sources.Project.Game;
-using Sources.Project.StateMachine;
+using Sources.Project.Managers;
 
-namespace Sources.Project{
-	public sealed class AuthenticationProjectState : ProjectState{
-		public override void Initialize(Common.StateMachine.StateMachine stateMachine){
-            base.Initialize(stateMachine);
+namespace Sources.Project.StateMachine{
+	public sealed class AuthenticationProjectState : IState{
+        private readonly IUserService _userService;
+        private readonly ISaveService _saveService;
+        private readonly IAccountManager _accountManger;
+        
+        public AuthenticationProjectState(ProjectSateMachine stateMachine, IPlatformServices platformServices, IAccountManager accountManger){
+            _userService = platformServices.UserService;
+            _saveService = platformServices.SaveService;
+            _accountManger = accountManger;
+        }
+        
+        
+		public void Enter(){
+            _userService.UserStatusChanged += UserService_UserServiceOnUserSignedIn;
+            _userService.Login(0);
             
-			ProjectContext.PlatformContext.UserService.UserStatusChanged += UserService_UserServiceOnUserSignedIn;
-			ProjectContext.PlatformContext.UserService.Login(0);
-            
-            _stateMachine.ApplyState<LobbyProjectState>();
+            //_stateMachine.EnterState<LobbyProjectState>();
 		}
 
-		public override void Release(){
-		
-		}
-
-		public override void OnUpdate(float deltaTime){
+		public void Exit(){
 		
 		}
 		
 		private async void UserService_UserServiceOnUserSignedIn(int slotId, LoginState loginState) {
-            ProjectContext.PlatformContext.UserService.UserStatusChanged -= UserService_UserServiceOnUserSignedIn;
-            var userData = ProjectContext.PlatformContext.UserService.GetPrimaryUser();
-            var save = await ProjectContext.PlatformContext.SaveService.Read(userData.UserId, 1, "test");
+            _userService.UserStatusChanged -= UserService_UserServiceOnUserSignedIn;
+            var userData = _userService.GetPrimaryUser();
+            var save = await _saveService.Read(userData.UserId, 1, "test");
             var account = Serialization.Deserialize<Account, BinarySerializationProvider, byte[]>(save);
             if (account == null) {
                 account = new Account();
@@ -39,7 +46,7 @@ namespace Sources.Project{
                 account.Version = GameConfig.SaveVersion;
             }*/
             
-            ProjectContext.AccountManager.Register(account, userData.SlotId);
+            _accountManger.Register(account, userData.SlotId);
             
             if (account.TimeTicks == -1) {
                 account.TimeTicks = DateTime.UtcNow.Ticks;
@@ -93,16 +100,9 @@ namespace Sources.Project{
             /*foreach (var quest in account.Progress.Quests.CompletedQuest) {
                 FSContext.QuestManager.AddCompletedQuest(quest);
             }
-
-            foreach (var quest in account.Progress.Quests.ActiveQuests) {
-                var activeQuest = FSContext.QuestManager.GetActiveQuest(quest.Name);
-                if (activeQuest == null) {
-                    activeQuest = FSContext.QuestManager.StartQuest(quest);
-                }
-                activeQuest.Data.Progress = quest.Progress;
-                activeQuest.Data.IsCompleted = quest.IsCompleted;
-            }*/
-            _stateMachine.ApplyState<LobbyProjectState>();
+            */
+            
+            //_stateMachine.EnterState<LobbyProjectState>();
         }
 	}
 }

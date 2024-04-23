@@ -8,7 +8,6 @@ namespace Sources.Project {
         [SerializeField] protected RectTransform _hintContainer;
         
         protected IWindowManager _windowManager;
-        protected IProjectContext FSContext { get { return _windowManager.FSContext; } }
 
         public event Action OnClose;
         public bool IsFocused;

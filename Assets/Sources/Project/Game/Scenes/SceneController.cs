@@ -7,19 +7,17 @@ using UnityEngine.SceneManagement;
 
 namespace Sources.Project.Scenes{
 	public interface ISceneController : IUpdateable{
-		IProjectContext ProjectContext{ get; }
 		ISceneContext SceneContext{ get; }
 
 		string SceneName{ get; }
 
-		Task Initialize(IProjectContext fsContext, string sceneName);
+		Task Initialize(string sceneName);
 		Task Release();
 	}
 
 	public class SceneController : MonoBehaviour, ISceneController{
 		[SerializeField] protected CameraController _cameraController;
-
-        public IProjectContext ProjectContext { get; protected set; }
+        
         public ISceneContext SceneContext { get; protected set; }
 
         public string SceneName { get; private set; }
@@ -34,10 +32,9 @@ namespace Sources.Project.Scenes{
         public Vector3 SpawnPosition;
         public Vector3 SpawnRotation;
 
-        public async Task Initialize(IProjectContext projectContext, string sceneName) {
-            ProjectContext = projectContext;
+        public async Task Initialize( string sceneName) {
             SceneName = sceneName;
-            SceneContext = new SceneContext(projectContext, _cameraController);
+            SceneContext = new SceneContext(_cameraController);
             
             await OnInitialize();
         }

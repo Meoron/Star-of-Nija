@@ -6,10 +6,7 @@ using UnityEngine;
 
 namespace Sources.Project.Managers {
     public interface IWindowManager {
-        void Initialize(IProjectContext projectContext);
         void Release();
-        
-        IProjectContext FSContext { get; }
         
         WindowController Current { get; }
         
@@ -25,14 +22,13 @@ namespace Sources.Project.Managers {
         [SerializeField] private WindowController[] _openedWindows = new WindowController[0];
 
         private Dictionary<LayoutLevel, Transform> _canvasMap = new Dictionary<LayoutLevel, Transform>();
-        
-        public IProjectContext FSContext { get; private set; }
+
         public WindowController Current { get; private set; }
         
         public bool IsBlockedInput { get; private set; }
 
-        public void Initialize(IProjectContext projectContext) {
-            FSContext = projectContext;
+        public WindowManager(){
+            
         }
 
         public void Release() {

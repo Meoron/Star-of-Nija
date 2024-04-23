@@ -71,6 +71,34 @@ public partial class @InputControlsBinding: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Test"",
+            ""id"": ""54fac743-fb86-46aa-bed0-49f4ff39bd13"",
+            ""actions"": [
+                {
+                    ""name"": ""TestKey"",
+                    ""type"": ""Button"",
+                    ""id"": ""47d507a6-3cf6-48ce-bf53-e16299a0c5b7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""cba3bd35-afbc-4ca8-ad87-8da9955d099a"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TestKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -102,11 +130,15 @@ public partial class @InputControlsBinding: IInputActionCollection2, IDisposable
         m_System = asset.FindActionMap("System", throwIfNotFound: true);
         m_System_AnyButton = m_System.FindAction("AnyButton", throwIfNotFound: true);
         m_System_Mouse = m_System.FindAction("Mouse", throwIfNotFound: true);
+        // Test
+        m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
+        m_Test_TestKey = m_Test.FindAction("TestKey", throwIfNotFound: true);
     }
 
     ~@InputControlsBinding()
     {
         Debug.Assert(!m_System.enabled, "This will cause a leak and performance issues, InputControlsBinding.System.Disable() has not been called.");
+        Debug.Assert(!m_Test.enabled, "This will cause a leak and performance issues, InputControlsBinding.Test.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -218,6 +250,52 @@ public partial class @InputControlsBinding: IInputActionCollection2, IDisposable
         }
     }
     public SystemActions @System => new SystemActions(this);
+
+    // Test
+    private readonly InputActionMap m_Test;
+    private List<ITestActions> m_TestActionsCallbackInterfaces = new List<ITestActions>();
+    private readonly InputAction m_Test_TestKey;
+    public struct TestActions
+    {
+        private @InputControlsBinding m_Wrapper;
+        public TestActions(@InputControlsBinding wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TestKey => m_Wrapper.m_Test_TestKey;
+        public InputActionMap Get() { return m_Wrapper.m_Test; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(TestActions set) { return set.Get(); }
+        public void AddCallbacks(ITestActions instance)
+        {
+            if (instance == null || m_Wrapper.m_TestActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TestActionsCallbackInterfaces.Add(instance);
+            @TestKey.started += instance.OnTestKey;
+            @TestKey.performed += instance.OnTestKey;
+            @TestKey.canceled += instance.OnTestKey;
+        }
+
+        private void UnregisterCallbacks(ITestActions instance)
+        {
+            @TestKey.started -= instance.OnTestKey;
+            @TestKey.performed -= instance.OnTestKey;
+            @TestKey.canceled -= instance.OnTestKey;
+        }
+
+        public void RemoveCallbacks(ITestActions instance)
+        {
+            if (m_Wrapper.m_TestActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ITestActions instance)
+        {
+            foreach (var item in m_Wrapper.m_TestActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_TestActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public TestActions @Test => new TestActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -240,5 +318,9 @@ public partial class @InputControlsBinding: IInputActionCollection2, IDisposable
     {
         void OnAnyButton(InputAction.CallbackContext context);
         void OnMouse(InputAction.CallbackContext context);
+    }
+    public interface ITestActions
+    {
+        void OnTestKey(InputAction.CallbackContext context);
     }
 }

@@ -2,8 +2,4 @@
     public interface IController {
         
     }
-
-    public class Controller : IController {
-        
-    }
 }

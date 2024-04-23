@@ -8,10 +8,8 @@ public class CameraController : MonoBehaviour
     private int pixelPerUnit = 16;
     private Camera cameraSpecification;
 
-    private void Awake()
-    {
-
-        cameraSpecification = GetComponent<Camera>();
-        cameraSpecification.orthographicSize = Screen.height / pixelPerUnit / 2;
+    private void Awake(){
+        //cameraSpecification = GetComponent<Camera>();
+        //cameraSpecification.orthographicSize = Screen.height / pixelPerUnit / 2;
     }
 }

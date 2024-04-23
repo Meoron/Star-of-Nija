@@ -6,8 +6,6 @@ namespace Sources.Project.Scenes {
     public interface ISceneContext {
         Transform Content { get; }
         
-        IProjectContext FSContext { get; }
-        
         CameraController CameraController { get; }
         //UpdateManager UpdateManager { get; }
 
@@ -18,7 +16,6 @@ namespace Sources.Project.Scenes {
 
     public sealed class SceneContext : Context, ISceneContext {
         public Transform Content { get; }
-        public IProjectContext FSContext { get; }
         public CameraController CameraController { get; }
         
         //public UpdateManager UpdateManager { get; }
@@ -27,8 +24,7 @@ namespace Sources.Project.Scenes {
         
         public IPlayerController PlayerController { get; set; }
 
-        public SceneContext(IProjectContext fsContext, CameraController cameraController) {
-            FSContext = fsContext;
+        public SceneContext(CameraController cameraController) {
             CameraController = cameraController;
             
             Content = new GameObject("[SceneContext]").transform;

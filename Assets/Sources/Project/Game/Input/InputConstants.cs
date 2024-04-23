@@ -2,6 +2,8 @@
     public sealed class InputConstants {
         public const string VisualInputScheme = "<sprite=\"{0}\" sprite name={1}>";
         
+        public const string TestKey = "Test/TestKey";
+		
         public const string SystemAnyButton = "System/AnyButton";
         public const string SystemMouse = "System/Mouse";
         

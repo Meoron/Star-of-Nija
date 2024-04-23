@@ -5,9 +5,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using Zenject;
 
 namespace Sources.Common.Input {
-    public interface IInputManager {
+    public interface IInputService {
         bool GetButtonUp(string action);
         bool GetButton(string action);
         bool GetButtonDown(string action);
@@ -20,9 +21,11 @@ namespace Sources.Common.Input {
 
     [RequireComponent(typeof(EventSystem))]
     [RequireComponent(typeof(InputSystemUIInputModule))]
-    public sealed class InputManager : IInputManager {
+    public sealed class InputService : IInputService, IInitializable {
         public static InputControlsBinding Binding;
         public static InputDevice CurrentDevice;
+
+        private Transform _infrastructureParent;
 
         private static event Action<InputSchemeType, InputDeviceType> _activeDeviceChanged;
 
@@ -36,9 +39,18 @@ namespace Sources.Common.Input {
             remove { _activeDeviceChanged -= value; }
         }
 
-        public InputManager(Transform parent) {
+        public InputService(Transform parent){
+            _infrastructureParent = parent;
+        }
+
+        ~ InputService() {
+            Binding.FindAction(InputConstants.SystemAnyButton).performed -= InputSystem_OnAnyButtonPerformed;
+            Binding.FindAction(InputConstants.SystemMouse).performed -= InputSystem_OnAnyButtonPerformed;
+        }
+
+        public void Initialize(){
             var inputSystemUIInputModule = new GameObject($"[{typeof(InputSystemUIInputModule).Name}]").AddComponent<InputSystemUIInputModule>();
-            inputSystemUIInputModule.transform.parent = parent;
+            inputSystemUIInputModule.transform.parent = _infrastructureParent;
 
             Binding = new InputControlsBinding();
             Binding.Enable();
@@ -46,11 +58,6 @@ namespace Sources.Common.Input {
             Binding.FindAction(InputConstants.SystemMouse).performed += InputSystem_OnAnyButtonPerformed;
             
             UpdateInputDevice(InputSystem.devices.FirstOrDefault());
-        }
-
-        ~ InputManager() {
-            Binding.FindAction(InputConstants.SystemAnyButton).performed -= InputSystem_OnAnyButtonPerformed;
-            Binding.FindAction(InputConstants.SystemMouse).performed -= InputSystem_OnAnyButtonPerformed;
         }
 
         public bool GetButtonUp(string action) {

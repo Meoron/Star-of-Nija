@@ -3,7 +3,7 @@
 public class UserController : MonoBehaviour{
 	private IControlable controlableObject;
 
-	private void Awake(){
+	private void Initialize(){
 		var lastControlledObject = Resources.Load<GameObject>("Prefabs/Units/Character/DoomSlayer");
 		IControlable controlledObject = Instantiate(lastControlledObject).GetComponent<IControlable>();
 		Initialize(controlledObject);

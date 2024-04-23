@@ -1,6 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.Events;
 using UnityEngine;
 using System;
 using Sources.Common.Input;
@@ -21,7 +19,7 @@ public class HeroController : MonoBehaviour, IControlable, IMovable, ILeaping{
 	private SurfaceCheck _surfaceCheck;
 	private float _horizontalAccelerationOfStrafe = 0.05f;
 
-	private AimOnGUI aimPosition;
+	private AimOnGUI _aimPosition;
 	private GameObject _aim;
 
 	//public Vector3 MousePositionOnCamera { set { _mousePositionOnCamera = value; } }
@@ -40,7 +38,7 @@ public class HeroController : MonoBehaviour, IControlable, IMovable, ILeaping{
 		_rigidbody = GetComponent<Rigidbody2D>();
 		_unitAnimator = GetComponent<Animator>();
 		_surfaceCheck = GetComponent<SurfaceCheck>();
-		aimPosition = _aim.GetComponent<AimOnGUI>();
+		_aimPosition = _aim.GetComponent<AimOnGUI>();
 	}
 
 	private void FixedUpdate(){
@@ -86,14 +84,14 @@ public class HeroController : MonoBehaviour, IControlable, IMovable, ILeaping{
 	}
 
 	private float GetDirectionMouseOnCameraAboutPlayer(){
-		return transform.position.x < aimPosition.MouseWorldPosition.x ? 1 : -1;
+		return transform.position.x < _aimPosition.MouseWorldPosition.x ? 1 : -1;
 	}
 
 	public void Moving(Vector3 direction){
 		transform.position = Vector3.Lerp(transform.position, transform.position + direction, Time.deltaTime * _speed);
 	}
 
-	public void Control(IInputManager manager){
+	public void Control(IInputService service){
 		throw new NotImplementedException();
 	}
 }

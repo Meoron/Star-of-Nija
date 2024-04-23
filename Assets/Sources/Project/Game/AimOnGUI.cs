@@ -32,8 +32,7 @@ public class AimOnGUI : MonoBehaviour
         Cursor.visible = true;
     }
 
-    private void Update()
-    {
+    private void Update(){
         _mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
