@@ -2,14 +2,14 @@
 using Sources.Platforms.Data;
 
 namespace Sources.Platforms.Windows {
-    public sealed class DefaultWindowsUserService : IUserService {
+    public sealed class WindowsUserService : IUserService {
         public UserData[] Users { get; private set; }
         public event Action<UserData, LoginState> UserStatusChanged;
         
 
         public bool IsInitialize { get; }
 
-        public DefaultWindowsUserService() {
+        public WindowsUserService() {
             Users = new UserData[4];
             IsInitialize = true;
         }

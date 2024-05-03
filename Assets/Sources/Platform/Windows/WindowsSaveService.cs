@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Sources.Platforms.Windows {
-    public sealed class DefaultWindowsSaveService : ISaveService {
+    public sealed class WindowsSaveService : ISaveService {
         public void Write(int userId, int slotId, string key, byte[] data) {
             var dir = Path.Combine(Application.persistentDataPath, userId.ToString(), slotId.ToString());
             if (!Directory.Exists(dir)) {
