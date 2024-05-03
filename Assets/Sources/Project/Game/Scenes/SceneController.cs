@@ -1,12 +1,11 @@
 using System.Threading.Tasks;
 using System.Xml;
-using Sources.Common;
 using Sources.Project.Game.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Sources.Project.Scenes{
-	public interface ISceneController : IUpdateable{
+	public interface ISceneController{
 		ISceneContext SceneContext{ get; }
 
 		string SceneName{ get; }
@@ -191,10 +190,6 @@ namespace Sources.Project.Scenes{
             if (scene.name == SceneName) {
                 OnSceneLoaded();
             }
-        }
-
-        public void OnUpdate(float deltaTime){
-            
         }
     }
 }

@@ -1,15 +1,20 @@
+using System.Collections.Generic;
+using Sources.Common.Services;
 using Sources.Common.StateMachine;
-using UnityEngine;
 
 namespace Sources.Project.StateMachine{
 	public sealed class BootstrapProjectState : IState{
+		private readonly List<IInitializable> _initializableServices;
 		
-		public BootstrapProjectState(ProjectSateMachine stateMachine){
-			
+		public BootstrapProjectState(ProjectSateMachine stateMachine, List<IInitializable> initializableServices){
+			_initializableServices = initializableServices;
 		}
 		
 		public void Enter(){
-			Debug.Log("Bootstrap entered");
+			for (int i = 0; i < _initializableServices.Count; i++){
+				_initializableServices[i].Initialize();
+			}
+			
 			//var parentTransform = _stateMachine.Controller.transform;
 			/*var windowManager = CreateMonoBehaviourInstance<WindowManager>(parentTransform);
 			

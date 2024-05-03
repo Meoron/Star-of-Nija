@@ -1,5 +1,6 @@
 ﻿namespace Sources.Common.StateMachine{
-	public interface IUpdatableState : IUpdateable{
+	public interface IUpdatableState{
+		public void OnUpdate(float deltaTime);
 	}
 
 	public interface IState : IExitableState{

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Sources.Common.AssetManager;
+using Sources.Project.Managers.UpdateManager;
 using UnityEngine;
 
 namespace Sources.Project.Managers {
@@ -18,7 +19,7 @@ namespace Sources.Project.Managers {
         T Get<T>() where T : WindowController;
     }
     
-    public sealed class WindowManager : MonoBehaviour, IWindowManager {
+    public sealed class WindowManager : MonoUpdatable, IWindowManager {
         [SerializeField] private WindowController[] _openedWindows = new WindowController[0];
 
         private Dictionary<LayoutLevel, Transform> _canvasMap = new Dictionary<LayoutLevel, Transform>();

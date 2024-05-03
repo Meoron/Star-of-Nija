@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
+using Sources.Common.Services;
 using Sources.Project.Game.Constants;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
-using Zenject;
 
 namespace Sources.Common.Input {
     public interface IInputService {
@@ -43,11 +43,14 @@ namespace Sources.Common.Input {
             _infrastructureParent = parent;
         }
 
-        ~ InputService() {
-            Binding.FindAction(InputConstants.SystemAnyButton).performed -= InputSystem_OnAnyButtonPerformed;
-            Binding.FindAction(InputConstants.SystemMouse).performed -= InputSystem_OnAnyButtonPerformed;
-        }
 
+        ~InputService(){
+            if (Binding != null){
+                Binding.FindAction(InputConstants.SystemAnyButton).performed -= InputSystem_OnAnyButtonPerformed;
+                Binding.FindAction(InputConstants.SystemMouse).performed -= InputSystem_OnAnyButtonPerformed;
+            }
+        }
+        
         public void Initialize(){
             var inputSystemUIInputModule = new GameObject($"[{typeof(InputSystemUIInputModule).Name}]").AddComponent<InputSystemUIInputModule>();
             inputSystemUIInputModule.transform.parent = _infrastructureParent;

@@ -1,17 +1,18 @@
 using Sources.Common.Input;
 using Sources.Platforms;
 using Sources.Project.Managers;
+using Sources.Project.Managers.UpdateManager;
 using Sources.Project.StateMachine;
 using UnityEngine;
 using Zenject;
 
-public class InfrastructureInstaller : MonoInstaller{
+public sealed class InfrastructureInstaller : MonoInstaller{
 	[SerializeField] private Transform _infrastructureTransfrom;
 	
 	public override void InstallBindings(){
 		BindServiecs();
-		BindFactories();
 		BindManagers();
+		BindFactories();
 	}
 
 	private void BindServiecs(){
@@ -24,11 +25,15 @@ public class InfrastructureInstaller : MonoInstaller{
 	}
 
 	private void BindManagers(){
+		var updateManager =
+			CreateAndGetMonoBehaviorInstance<UpdateManager>("[UpdateManager]", _infrastructureTransfrom);
 		var windowManager =
 			CreateAndGetMonoBehaviorInstance<WindowManager>("[WindowManager]", _infrastructureTransfrom);
 		
-		Container.Bind<IAccountManager>().To<AccountManager>().AsSingle().NonLazy();
+		Container.Bind<IUpdateManager>().FromInstance(updateManager).AsSingle().NonLazy();
 		Container.Bind<IWindowManager>().FromInstance(windowManager).AsSingle().NonLazy();
+		Container.Bind<IAccountManager>().To<AccountManager>().AsSingle().NonLazy();
+		
 	}
 
 	private T CreateAndGetMonoBehaviorInstance<T>(string name,Transform parent) where T : MonoBehaviour{
