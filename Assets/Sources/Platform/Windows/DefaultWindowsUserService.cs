@@ -2,17 +2,14 @@
 using Sources.Platforms.Data;
 
 namespace Sources.Platforms.Windows {
-    public sealed class WindowsUserService : IUserService {
+    public sealed class DefaultWindowsUserService : IUserService {
         public UserData[] Users { get; private set; }
-        public event Action<UserData> UserSignedOut;
-        public event Action<UserData> UserSignedIn;
-        public event Action<UserData> UserChanged;
-        public event Action<int, LoginState> UserStatusChanged;
+        public event Action<UserData, LoginState> UserStatusChanged;
         
 
         public bool IsInitialize { get; }
 
-        public WindowsUserService() {
+        public DefaultWindowsUserService() {
             Users = new UserData[4];
             IsInitialize = true;
         }
@@ -25,18 +22,13 @@ namespace Sources.Platforms.Windows {
                     Profile = new ProfileData()
             };
             Users[slot] = user;
-            UserSignedIn?.Invoke(user);
+            
+            UserStatusChanged?.Invoke(user, LoginState.SignedIn);
         }
 
-        public void Logout(int slot) {
-        }
-
-        public void Release(){
-            throw new NotImplementedException();
-        }
-
-        public void Update(float deltaTime){
-            throw new NotImplementedException();
+        public void Logout(int slot){
+            var user = GetUser(slot);
+            UserStatusChanged?.Invoke(user, LoginState.SignedIn);
         }
 
         public UserData GetUser(int slot) {

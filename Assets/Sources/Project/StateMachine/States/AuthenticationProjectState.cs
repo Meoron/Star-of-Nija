@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Sources.Common;
 using Sources.Common.Serialization;
 using Sources.Common.StateMachine;
@@ -10,11 +11,13 @@ using Sources.Project.Managers;
 
 namespace Sources.Project.StateMachine{
 	public sealed class AuthenticationProjectState : IState{
+        private IStateMachine _projectStateMachine;
         private readonly IUserService _userService;
         private readonly ISaveService _saveService;
         private readonly IAccountManager _accountManger;
         
         public AuthenticationProjectState(ProjectSateMachine stateMachine, IPlatformServices platformServices, IAccountManager accountManger){
+            _projectStateMachine = stateMachine;
             _userService = platformServices.UserService;
             _saveService = platformServices.SaveService;
             _accountManger = accountManger;
@@ -24,18 +27,20 @@ namespace Sources.Project.StateMachine{
 		public void Enter(){
             _userService.UserStatusChanged += UserService_UserServiceOnUserSignedIn;
             _userService.Login(0);
-            
-            //_stateMachine.EnterState<LobbyProjectState>();
 		}
 
 		public void Exit(){
 		
 		}
-		
-		private async void UserService_UserServiceOnUserSignedIn(int slotId, LoginState loginState) {
+
+        private async void UserService_UserServiceOnUserSignedIn(UserData userData, LoginState loginState){
+            await LoadingUserSaveData(userData);
+            MoveToNextState(loginState);
+        }
+        
+		private async Task LoadingUserSaveData(UserData userData) {
             _userService.UserStatusChanged -= UserService_UserServiceOnUserSignedIn;
-            var userData = _userService.GetPrimaryUser();
-            var save = await _saveService.Read(userData.UserId, 1, "test");
+            var save = await _saveService.Read(userData.UserId, userData.SlotId, "test");
             var account = Serialization.Deserialize<Account, BinarySerializationProvider, byte[]>(save);
             if (account == null) {
                 account = new Account();
@@ -101,8 +106,12 @@ namespace Sources.Project.StateMachine{
                 FSContext.QuestManager.AddCompletedQuest(quest);
             }
             */
-            
-            //_stateMachine.EnterState<LobbyProjectState>();
+        }
+        
+        private void MoveToNextState(LoginState loginState){
+            if (loginState == LoginState.SignedIn){
+                _projectStateMachine.EnterState<LoadingProjectState>();
+            }
         }
 	}
 }

@@ -16,7 +16,7 @@
 #elif UNITY_STANDALONE && !DISABLESTEAMWORKS
             _platformContext = new Sources.Platform.Steam.SteamContext();
 #else
-            _platformServices = new Windows.WindowsServices();
+            _platformServices = new Windows.DefaultWindowsServices();
 #endif
             UserService = _platformServices.UserService;
             SaveService = _platformServices.SaveService;
