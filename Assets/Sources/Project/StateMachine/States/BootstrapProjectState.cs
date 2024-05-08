@@ -7,7 +7,7 @@ namespace Sources.Project.StateMachine{
 		private IStateMachine _projectStateMachine;
 		private readonly List<IInitializable> _initializableServices;
 		
-		public BootstrapProjectState(ProjectSateMachine stateMachine, List<IInitializable> initializableServices){
+		public BootstrapProjectState(ProjectStateMachine stateMachine, List<IInitializable> initializableServices){
 			_projectStateMachine = stateMachine;
 			_initializableServices = initializableServices;
 		}

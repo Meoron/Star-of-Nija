@@ -1,115 +1,88 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Sources.Common.AssetManager;
+using Sources.Common.Services;
+using Sources.Project.Factories;
 using Sources.Project.Managers.UpdateManager;
+using Sources.Project.UI.Windows;
 using UnityEngine;
 
 namespace Sources.Project.Managers {
     public interface IWindowManager {
-        void Release();
-        
-        WindowController Current { get; }
-        
+        IWindowController Current { get; }
         bool IsBlockedInput { get; }
         
-        Task<T> Open<T>(string path, bool autoInitialize = true) where T : WindowController;
-        void Close<T>(T window) where T : WindowController;
-        void CloseAll<T>() where T : WindowController;
-        T Get<T>() where T : WindowController;
+        Task<T> Open<T>(string path, bool autoInitialize = true) where T : class, IWindowController;
+        void Close<T>(T window) where T : class, IWindowController;
+        void CloseAll<T>() where T : class, IWindowController;
+        T Get<T>() where T : class, IWindowController;
     }
     
-    public sealed class WindowManager : MonoUpdatable, IWindowManager {
-        [SerializeField] private WindowController[] _openedWindows = new WindowController[0];
-
-        private Dictionary<LayoutLevel, Transform> _canvasMap = new Dictionary<LayoutLevel, Transform>();
-
-        public WindowController Current { get; private set; }
+    public sealed class WindowManager : IWindowManager, IInitializable, IUpdatable, IFixedUpdatable{
+        private readonly ZenjectWindowFactory _zenjectWindowFactory;
+        private readonly IUpdateManager _updateManager;
         
+        private IWindowController[] _openedWindows = new IWindowController[0];
+        private GameObject _openedWindowsContainer;
+
+        
+        public IWindowController Current { get; private set; }
         public bool IsBlockedInput { get; private set; }
 
-        public WindowManager(){
-            
-        }
-
-        public void Release() {
+        
+        public WindowManager(ZenjectWindowFactory zenjectWindowFactory, IUpdateManager updateManager){
+            _zenjectWindowFactory = zenjectWindowFactory;
+            _updateManager = updateManager;
         }
         
-        public async Task<T> Open<T>(string path, bool autoInitialize = true) where T : WindowController {
+        public void Initialize(){
+            _updateManager.Register(this);
+            _openedWindowsContainer = new GameObject("[OpenedWindowsContainer]");
+            GameObject.DontDestroyOnLoad(_openedWindowsContainer);
+        }
+        
+        public async Task<T> Open<T>(string path, bool autoInitialize = true) where T : class, IWindowController {
             var window = Get<T>();
             if (window != null) return window;
-            
-            var prefab = await AssetManager.LoadPrefabAsync<T>(path);
-            var layout = prefab.GetLayout();
-            if (!_canvasMap.ContainsKey(layout)) {
-                var container = new GameObject($"{layout}").transform;
-                container.transform.parent = transform;
-                _canvasMap.Add(layout, container);
-            }
-            
-            window = Instantiate(prefab, _canvasMap[layout]);
-            window.GetComponent<Canvas>().sortingOrder = (int)layout * 1000 + _canvasMap[layout].childCount;
-            
-            if (autoInitialize) {
-                window.Initialize(this);
-            }
-            
-            _openedWindows = _openedWindows.Append(window).ToArray();
 
-            Current?.OnFocusChanged(false);
-            Current = window;
-            window.OnFocusChanged(true);
-           
+            window = _zenjectWindowFactory.CreateWindow<T>();
+            await window.Initialize(_openedWindowsContainer.transform);
+            window.OnOpen();
+            
             return window;
         }
-
-        public void Close<T>(T window) where T : WindowController {
+        
+        public void Close<T>(T window) where T : class, IWindowController {
             if (window == null) return;
             
-            window.Release();
+            window.OnClose();
             _openedWindows = _openedWindows.Where(x => x != window).ToArray();
-            DestroyImmediate(window.gameObject);
             Current = _openedWindows.LastOrDefault();
-            Current?.OnFocusChanged(true);
         }
         
-        public void CloseAll<T>() where T : WindowController {
+        public void CloseAll<T>() where T : class, IWindowController {
             var windows = _openedWindows.Where(x => x is T).ToArray();
             foreach (var window in windows) {
                 Close(window as T);
             }
         }
 
-        public T Get<T>() where T : WindowController {
+        public T Get<T>() where T : class, IWindowController {
             return _openedWindows.FirstOrDefault(x => x is T) as T;
         }
 
-        private void Update() {
+        public void OnUpdate(float deltaTime) {
             foreach (var window in _openedWindows) {
-                window.OnUpdate();
+                if(window is IUpdatable updatableWindow)
+                    updatableWindow.OnUpdate(deltaTime);
             }
         }
         
-
-        private void FixedUpdate() {
+        public void OnFixedUpdate(float deltaTime) {
             foreach (var window in _openedWindows) {
-                window.OnFixedUpdate();
+                if(window is IFixedUpdatable updatableWindow)
+                    updatableWindow.OnFixedUpdate(deltaTime);
             }
         }
-
-        /*private void LateUpdate() {
-            IsBlockedInput = false;
-            var inputWindow = (WindowControllerWithJoystick) null;
-            foreach (var window in _openedWindows) {
-                if (window is WindowControllerWithJoystick) {
-                    inputWindow = window as WindowControllerWithJoystick;
-                }
-                window.OnDrawUpdate();
-            }
-
-            IsBlockedInput = inputWindow != null && inputWindow.IsPlayerInputBlocked;
-            inputWindow?.OnInputUpdate();
-        }*/
     }
 
     public enum LayoutLevel {

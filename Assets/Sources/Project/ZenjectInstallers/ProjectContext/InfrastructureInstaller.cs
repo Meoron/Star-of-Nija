@@ -1,5 +1,6 @@
 using Sources.Common.Input;
 using Sources.Platforms;
+using Sources.Project.Factories;
 using Sources.Project.Managers;
 using Sources.Project.Managers.UpdateManager;
 using Sources.Project.StateMachine;
@@ -11,29 +12,27 @@ public sealed class InfrastructureInstaller : MonoInstaller{
 	
 	public override void InstallBindings(){
 		BindServiecs();
-		BindManagers();
 		BindFactories();
+		BindManagers();
 	}
 
 	private void BindServiecs(){
-		Container.Bind<IInputService>().To<InputService>().AsSingle().WithArguments(_infrastructureTransfrom).NonLazy();
+		Container.BindInterfacesAndSelfTo<InputService>().AsSingle().WithArguments(_infrastructureTransfrom).NonLazy();
 		Container.Bind<IPlatformServices>().To<PlatformServices>().AsSingle().NonLazy();
 	}
 
 	private void BindFactories(){
-		Container.BindInterfacesAndSelfTo<ProjectStateFactory>().AsSingle();
+		Container.BindInterfacesAndSelfTo<ZenjectProjectStateFactory>().AsSingle();
+		Container.BindInterfacesAndSelfTo<ZenjectWindowFactory>().AsSingle();
 	}
 
 	private void BindManagers(){
 		var updateManager =
 			CreateAndGetMonoBehaviorInstance<UpdateManager>("[UpdateManager]", _infrastructureTransfrom);
-		var windowManager =
-			CreateAndGetMonoBehaviorInstance<WindowManager>("[WindowManager]", _infrastructureTransfrom);
 		
 		Container.Bind<IUpdateManager>().FromInstance(updateManager).AsSingle().NonLazy();
-		Container.Bind<IWindowManager>().FromInstance(windowManager).AsSingle().NonLazy();
 		Container.Bind<IAccountManager>().To<AccountManager>().AsSingle().NonLazy();
-		
+		Container.BindInterfacesAndSelfTo<WindowManager>().AsSingle().NonLazy();
 	}
 
 	private T CreateAndGetMonoBehaviorInstance<T>(string name,Transform parent) where T : MonoBehaviour{

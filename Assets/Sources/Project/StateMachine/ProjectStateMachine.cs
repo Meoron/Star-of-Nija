@@ -2,10 +2,10 @@ using Sources.Project.Managers.UpdateManager;
 using Zenject;
 
 namespace Sources.Project.StateMachine{
-	public sealed class ProjectSateMachine : Common.StateMachine.StateMachine, IInitializable, IUpdatable{
+	public sealed class ProjectStateMachine : Common.StateMachine.StateMachine, IInitializable, IUpdatable{
 		private IUpdateManager _updateManager;
 		
-		public ProjectSateMachine(ProjectStateFactory projectStatesFactory,  IUpdateManager updateManager) : base(projectStatesFactory){
+		public ProjectStateMachine(ZenjectProjectStateFactory zenjectProjectStatesFactory, IUpdateManager updateManager) : base(zenjectProjectStatesFactory){
 			_updateManager = updateManager;
 		}
 
@@ -16,6 +16,8 @@ namespace Sources.Project.StateMachine{
 			RegisterState<BootstrapProjectState>();
 			RegisterState<AuthenticationProjectState>();
 			RegisterState<LoadingProjectState>();
+			RegisterState<LobbyProjectState>();
+			RegisterState<GameLoopProjectState>();
 			
 			EnterState<BootstrapProjectState>();
 		}

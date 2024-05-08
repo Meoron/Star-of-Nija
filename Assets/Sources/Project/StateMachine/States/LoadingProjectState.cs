@@ -6,21 +6,21 @@ using Sources.Project.StateMachine;
 using Sources.Project.UI.Windows;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Zenject;
 
 public sealed class LoadingProjectState : IState{
 	private IWindowManager _windowManger;
+	private ProjectStateMachine _stateMachine;
 	
-	[Inject]
-	public LoadingProjectState(IWindowManager windowManager){
+	public LoadingProjectState(IWindowManager windowManager, ProjectStateMachine stateMachine){
 		_windowManger = windowManager;
+		_stateMachine = stateMachine;
 	}
 	
 	public async void Enter() {
 		var loaderWindow = await _windowManger.Open<LoadingWindowController>("Prefabs/UI/Window - Loading");
-		while (loaderWindow.IsInProgress) {
+		/*while (loaderWindow.IsInProgress) {
 			await Task.Delay(100);
-		}
+		}*/
             
 		await Task.Delay(1000);
 
@@ -31,18 +31,19 @@ public sealed class LoadingProjectState : IState{
 		/*if (string.IsNullOrEmpty(sceneName)) {
 			sceneName = GameConfig.DefaultSceneName;
 		}*/
-            
+		
+		await UnloadAndCleanMemory();
 		await LoadScene(sceneName);
 		//await InitializeScene(sceneName);
-		await UnloadAndCleanMemory();
+		
 
-		loaderWindow.Close();
+		loaderWindow.OnClose();
 
-		//_stateMachine.EnterState<GameProjectState>();
+		_stateMachine.EnterState<GameLoopProjectState>();
 	}
 
 	public void Exit(){
-		throw new System.NotImplementedException();
+		
 	}
 
 	private async Task LoadScene(string sceneName) {

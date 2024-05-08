@@ -88,7 +88,7 @@ namespace Sources.Project.Managers.UpdateManager{
 		}
 
 		private void LateUpdate(){
-			var count = _fixedUpdatableObjects.Count;
+			var count = _lateUpdatableObjects.Count;
 			for (int i = 0; i < count; i++){
 				try{
 					_lateUpdatableObjects[i].OnLateUpdate(Time.deltaTime);

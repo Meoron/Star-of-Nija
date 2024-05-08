@@ -16,7 +16,7 @@ namespace Sources.Project.StateMachine{
         private readonly ISaveService _saveService;
         private readonly IAccountManager _accountManger;
         
-        public AuthenticationProjectState(ProjectSateMachine stateMachine, IPlatformServices platformServices, IAccountManager accountManger){
+        public AuthenticationProjectState(ProjectStateMachine stateMachine, IPlatformServices platformServices, IAccountManager accountManger){
             _projectStateMachine = stateMachine;
             _userService = platformServices.UserService;
             _saveService = platformServices.SaveService;
@@ -110,7 +110,7 @@ namespace Sources.Project.StateMachine{
         
         private void MoveToNextState(LoginState loginState){
             if (loginState == LoginState.SignedIn){
-                _projectStateMachine.EnterState<LoadingProjectState>();
+                _projectStateMachine.EnterState<LobbyProjectState>();
             }
         }
 	}
